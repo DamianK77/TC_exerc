@@ -1,0 +1,203 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[polish]{babel}
+
+\geometry{margin=2.5cm}
+
+% Nagłówek i stopka
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Technika Cyfrowa}
+\fancyhead[C]{Materiały ćwiczeniowe}
+\fancyhead[R]{\thepage}
+\fancyfoot[L]{PG, 2025 ZIMA}
+
+
+
+\title{Technika Cyfrowa\\Materiały dydaktyczne}
+\author{Damian Kąkol}
+\date{Zima 2025}
+
+\begin{document}
+
+\maketitle
+
+\subsubsection*{Zaliczenie ćwiczeń}
+Kontakt: \\
+Damian Kąkol \\
+E-mail: damian.kakol@pg.edu.pl \\
+Konsultacje: \\
+pokój EA 745 \\
+wtorek 13:15 - 14:00
+
+\subsubsection*{Przydatne narzędzia}
+\begin{itemize}
+    \item Kalkulator programisty w Windows
+    \item Falstad - symulator układów cyfrowych
+\end{itemize}
+
+\subsubsection*{System liczbowy dziesiętny i binarny}
+System liczbowy dziesiętny (decymalny) jest najczęściej używanym systemem liczbowym w codziennym życiu. Opiera się na bazie 10 i wykorzystuje cyfry od 0 do 9. Każda cyfra w liczbie dziesiętnej ma określoną wartość w zależności od jej pozycji (miejsca) w liczbie. Na przykład, w liczbie $345_{10}$:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+3 & 4 & 5 \\
+10\textsuperscript{2} & 10\textsuperscript{1} & 10\textsuperscript{0} \\
+300 & 40 & 5 \\
+\hline
+\end{tabular}
+\end{table}
+
+w systemie dwójkowym (binarnym) używamy tylko dwóch cyfr: 0 i 1. Każda cyfra w liczbie binarnej również ma wartość zależną od jej pozycji, ale bazą jest 2. Na przykład, w liczbie $1011_2$:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+1 & 0 & 1 & 1 \\
+2\textsuperscript{3} & 2\textsuperscript{2} & 2\textsuperscript{1} & 2\textsuperscript{0} \\
+8 & 0 & 2 & 1 \\
+\hline
+\end{tabular}
+\end{table}
+
+czyli $1011_2 = 8 + 0 + 2 + 1 = 11_{10}$.
+
+\begin{enumerate}
+    \item $101101_2$ $\rightarrow$ DEC ($45_{10}$)
+    \item $11101_2$ $\rightarrow$ DEC ($29_{10}$)
+\end{enumerate}
+
+\subsubsection*{DEC $\rightarrow$ BIN}
+Aby przekonwertować liczbę dziesiętną na binarną, można użyć metody dzielenia przez 2. Proces ten polega na wielokrotnym dzieleniu liczby przez 2 i zapisywaniu reszt z tych dzielenia. Reszty te, czytane od dołu do góry, tworzą liczbę binarną. Na przykład, aby przekonwertować liczbę $147_{10}$ na system binarny wykonujemy następujące kroki:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Liczba & Reszta & Współczynnik \\
+\hline
+147 & 1 & 2\textsuperscript{0} \\
+73 & 1 & 2\textsuperscript{1} \\
+36 & 0 & 2\textsuperscript{2} \\
+18 & 0 & 2\textsuperscript{3} \\
+9 & 1 & 2\textsuperscript{4} \\
+4 & 0 & 2\textsuperscript{5} \\
+2 & 0 & 2\textsuperscript{6} \\
+1 & 1 & 2\textsuperscript{7} \\
+\hline
+\end{tabular}
+\end{table}
+Odczytując reszty od dołu do góry, otrzymujemy $10010011_2$. Zatem $147_{10} = 10010011_2$.
+
+\begin{enumerate}
+    \item $374_{10}$ $\rightarrow$ BIN ($101110110_2$)
+\end{enumerate}
+
+\subsubsection*{System czwórkowy}
+System czwórkowy jest systemem liczbowym opartym na bazie 4, używającym cyfr od 0 do 3. Każda cyfra w liczbie czwórkowej ma wartość zależną od jej pozycji, podobnie jak w innych systemach liczbowych. Na przykład, w liczbie $3201_4$:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+3 & 2 & 1 \\
+4\textsuperscript{2} & 4\textsuperscript{1} & 4\textsuperscript{0} \\
+32 & 0 & 1 \\
+\hline
+\end{tabular}
+\end{table}
+
+czyli $321_4 = 48 + 8 + 1 = 57_{10}$.
+
+\begin{enumerate}
+    \item $222_4$ $\rightarrow$ DEC ($42_{10}$)
+\end{enumerate}
+
+Łatwa konwersja między systemem czwórkowym a binarnym:
+\begin{itemize}
+    \item Każda cyfra w systemie czwórkowym odpowiada dokładnie dwóm cyfrom w systemie binarnym.
+    \item Przykład: $323_4$ $\rightarrow$ BIN ($111011_2$)
+    \item Kowersja w drugą stronę działa na tej samej zasadzie.
+    \item Przykład: $11101_2$ $\rightarrow$ $131_4$
+    \item Przykład: $101111_2$ $\rightarrow$ $233_4$
+\end{itemize}
+
+\subsubsection*{System ósemkowy}
+System ósemkowy (oktalny) jest systemem liczbowym opartym na bazie 8, używającym cyfr od 0 do 7. Każda cyfra w liczbie ósemkowej ma wartość zależną od jej pozycji, podobnie jak w innych systemach liczbowych.
+W tym systemie grupujemy cyfry binarne w grupy po trzy, zaczynając od prawej strony. 
+\\
+(tu rozpisz tablicę binarną od 0 do 7)
+\\
+Na przykład: $632_8$: $110 011 010_2$
+
+\subsubsection*{System szesnastkowy}
+System szesnastkowy (heksadecymalny) jest systemem liczbowym opartym na bazie 16, używającym cyfr od 0 do 9 oraz liter A, B, C, D, E i F, które reprezentują wartości od 10 do 15. Każda cyfra w liczbie szesnastkowej ma wartość zależną od jej pozycji, podobnie jak w innych systemach liczbowych. Na przykład, w liczbie $2F3_{16}$:
+\\
+(tu rozpisz tablicę od 0 do F)
+\\
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+2 & F & 3 \\
+16\textsuperscript{2} & 16\textsuperscript{1} & 16\textsuperscript{0} \\
+512 & 240 & 3 \\
+\hline
+\end{tabular}
+\end{table}
+
+czyli $2F3_{16} = 512 + 240 + 3 = 755_{10}$.
+
+aby zamienić z BIN na HEX, grupujemy cyfry binarne w grupy po cztery, zaczynając od prawej strony.
+\\
+Na przykład: $110101111010_2$: $D7A_{H}$
+
+\begin{enumerate}
+    \item $AF6B_{16}$ $\rightarrow$ DEC ($44907_{10}$)
+    \item $FACE_{16}$ $\rightarrow$ BIN ($1111101011001110_2$)
+    \item $AF6_{16}$ $\rightarrow$ OCT ($5366_8$) tu konwersja do binarnego i potem do oktalnego
+\end{enumerate}
+
+\subsubsection*{Operacje na liczbach binarnych}
+\begin{itemize}
+    \item Dodawanie
+    \item Odejmowanie
+    \item Mnożenie - przesuń i dodaj
+\end{itemize}
+
+\subsubsection*{Kod BCD}
+Kod BCD (Binary-Coded Decimal) to sposób reprezentacji liczb dziesiętnnych za pomocą ich odpowiedników binarnych. W kodzie BCD każda cyfra dziesiętna jest reprezentowana przez cztery bity (4 bity na cyfrę). Na przykład, liczba dziesiętna 45 jest reprezentowana w kodzie BCD jako 0100 0101, gdzie 0100 to 4, a 0101 to 5.
+
+\subsubsection*{Kod Gray'a}
+Kod Gray'a to system kodowania liczb binarnych, w którym dwie kolejne liczby różnią się tylko jednym bitem. Jest to szczególnie przydatne w sytuacjach, gdzie zmiany stanów muszą być minimalne, na przykład w enkoderach obrotowych. W kodzie Gray'a, przejście z jednej liczby do drugiej powoduje zmianę tylko jednego bitu, co minimalizuje ryzyko błędów podczas odczytu.
+\\ \\
+(Narysuj taśmę z kodem binarnym i problemy z tym związane na przykładzie robota, 4 bity) \\ \\
+(Jak konstruować graya) \\ 
+(suma modulo 2)
+
+Konwersja z binarnego na graya. Aby przekonwertować liczbę binarną na kod Gray'a, należy wykonać następujące kroki:
+\begin{enumerate}
+    \item Najbardziej znaczący bit (MSB) kodu Gray'a jest taki sam jak najbardziej znaczący bit liczby binarnej.
+    \item Każdy kolejny bit kodu Gray'a jest uzyskiwany przez wykonanie operacji XOR (suma modulo 2) między bieżącym bitem liczby binarnej a poprzednim bitem liczby binarnej.
+\end{enumerate}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/gray.png}
+    \caption{Konwersja z binarnego na kod Gray'a}
+\end{figure}
+
+\include{zaj2}
+\end{document}
