@@ -7,25 +7,38 @@ Aksjomaty algebry Boole'a:
     \caption{Aksjomaty algebry Boole'a}
 \end{figure}
 
-sprawdzenie tożsamości TODO
+sprawdzenie tożsamości za pomocą tabeli prawdy:
+\begin{enumerate}
+    \item $(x+y)(x+z) = x + yz$
+    \item $x + \overline{x}y = x + y$
+\end{enumerate}
 
 na podstawie aksjomatów i tożsamości można upraszczać wyrażenia.
 
 Przykłady upraszczania wyrażeń:
 
 \begin{enumerate}
-    \item $\bar{x}\bar{y} + xy + \bar{x}y$
-    \item $(x + y)(x + \bar{y})$
-    \item $\bar{x} + xy + x\bar{z} + x\bar{y}\bar{z}$
-    \item $\overline{(x+y)}(\bar{x} + \bar{y})$
+    \item $\overline{x}\overline{y} + xy + \overline{x}y$
+    \item $(x + y)(x + \overline{y})$
+    \item $\overline{x} + xy + x\overline{z} + x\overline{y}\overline{z}$
+    \item $\overline{(x+y)}(\overline{x} + \overline{y})$
+    \item $xy + \overline{x}y\overline{z} + yz$
+    \item $yz + xywz + \overline{y}z$ 
+    \item $x\overline{y} + z + (\overline{x} + y)\overline{z}$
+    \item $(x + \overline{y})(y + \overline{z})(z + \overline{x})(xyz + \bar{x}\bar{y}\bar{z})$
+    \item $x\overline{y} + z(\overline{x} + y + w)$
     \item 
 \end{enumerate}
 
 Odpowiedzi:
 \begin{enumerate}
-    \item $\bar{x} + y$
+    \item $\overline{x} + y$
     \item $x$
-    \item $\bar{x} + y + \bar{z}$
-    \item $\bar{x}\bar{y}$
-    \item 
+    \item $\overline{x} + y + \overline{z}$
+    \item $\overline{x}\overline{y}$
+    \item $y$
+    \item $z$
+    \item $1$
+    \item $xyz + \bar{x}\bar{y}\bar{z}$
+    \item $z + x\overline{y}$
 \end{enumerate}
