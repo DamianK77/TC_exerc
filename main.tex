@@ -8,11 +8,16 @@
 \usepackage{hyperref}
 \usepackage{bookmark}
 \usepackage{listings}
+\usepackage{diagbox}
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage[polish]{babel}
 
 \geometry{margin=2.5cm}
+% \renewcommand{\familydefault}{\ttdefault}
+
+% \renewcommand{\ttdefault}{pcr} % Sets Courier as the typewriter font
+
 
 % Nagłówek i stopka
 \pagestyle{fancy}
@@ -20,26 +25,22 @@
 \fancyhead[L]{Technika Cyfrowa}
 \fancyhead[C]{Materiały ćwiczeniowe}
 \fancyhead[R]{\thepage}
-\fancyfoot[L]{PG, 2025 ZIMA}
+\fancyfoot[L]{PG Katedra Sygnałów i Systemów}
 
 
 
 \title{Technika Cyfrowa\\Materiały dydaktyczne}
 \author{Damian Kąkol}
-\date{Zima 2025}
+\date{Ver. 2026.1}
 
 \begin{document}
 
 \maketitle
-
-\subsubsection*{Zaliczenie ćwiczeń}
+% \ttfamily
 Kontakt: \\
 Damian Kąkol \\
 E-mail: damian.kakol@pg.edu.pl \\
-Konsultacje: \\
-pokój EA 745 \\
-wtorek 13:15 - 14:00
-
+Konsultacje: EA 751 \\
 \subsubsection*{Przydatne narzędzia}
 \begin{itemize}
     \item Kalkulator programisty w Windows
@@ -186,7 +187,7 @@ Kod Gray'a to system kodowania liczb binarnych, w którym dwie kolejne liczby r�
 \\ \\
 (Narysuj taśmę z kodem binarnym i problemy z tym związane na przykładzie robota, 4 bity) \\ \\
 (Jak konstruować graya) \\ 
-(suma modulo 2)
+(suma modulo 2)\\
 
 Konwersja z binarnego na graya. Aby przekonwertować liczbę binarną na kod Gray'a, należy wykonać następujące kroki:
 \begin{enumerate}
@@ -200,4 +201,5 @@ Konwersja z binarnego na graya. Aby przekonwertować liczbę binarną na kod Gra
 \end{figure}
 
 \include{zaj2}
+\include{zaj3}
 \end{document}

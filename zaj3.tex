@@ -1,0 +1,54 @@
+\section{Minimalizacja form boolowskich}
+Naukę minimalizacji funkcji logicznych najlepiej zacząć od praktycznego przykładu.
+
+\subsubsection*{System zabezpieczenia pracy robota}
+Problem: Mamy robota, który posiada 4 przełączniki bezpieczeństwa: A, B, C i D. Robot ma działać (wyjście układu ma wynosić 1), kiedy co najmniej dwa przełączniki obok siebie są wciśnięte (mają stan 1).\\
+
+Najpierw rozpisujemy tabelę prawdy układu, czyli zależność wyjścia od wejścia. Określa ona, jaka ma być odpowiedź naszego systemu na konkretne stany podawane na jego wejście. Rozpisujemy więc wszystkie opcje stanów:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+        A B C D (liczba w dziesiętnym) & Y (wyjście)\\
+        \hline
+        0 0 0 0 (0) & 0 \\
+        0 0 0 1 (1) & 0 \\
+        0 0 1 0 (2) & 0 \\
+        0 0 1 1 (3) & 1 \\
+        0 1 0 0 (4) & 0 \\
+        0 1 0 1 (5) & 0 \\
+        0 1 1 0 (6) & 1 \\
+        0 1 1 1 (7) & 1 \\
+        1 0 0 0 (8) & 0 \\
+        1 0 0 1 (9) & 0 \\
+        1 0 1 0 (10) & 0 \\
+        1 0 1 1 (11) & 1 \\
+        1 1 0 0 (12) & 1 \\
+        1 1 0 1 (13) & 1 \\
+        1 1 1 0 (14) & 1 \\
+        1 1 1 1 (15) & 1 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Teraz mamy tak na prawdę zdefiniowaną funkcję, którą moglibyśmy zapisać jako:\\
+$$Y = \Sigma(3,6,7,11,12,13,14,15)$$
+poprzez zapisanie w nawiasie wszystkich liczb, dla których wyjście naszego układu wynosi 1. Równanie takiej funkcji wyglądałoby następująco:
+$$Y = \bar{A}\bar{B}CD + \bar{A}BC\bar{D} + \bar{A}BCD + A\bar{B}CD + AB\bar{C}\bar{D} + AB\bar{C}D + ABC\bar{D} + ABCD$$
+Czy ta funkcja jest jednak najprostszym zapisem umożliwiajacym zrealizowanie układu? W tym przypadku od razu widać że, przykładowo, kiedy A i B są jedynkami nie mają znaczenia wartości B i C, układ i tak będzie podawał na wyjście 1. Możemy to jednak sprawdzić również algorytmicznie, wykorzystując do tego \textbf{metodę Karnaugh}.\\
+
+W tym celu formujemy tabelę Karnaugh. Jest to tak na prawdę tabela prawdy, zapisana w delikatnie inny sposób. Tabela \textbf{musi} być zakodowana \textbf{w kodzie Gray'a}. W komórkach tabeli umieszczamy wartość wyjścia $Y$ dla danej kombinacji wejść A B C i D. W prawym górnym rogu umieszczamy zapis której liczbie w systemie dziesiętnym odpowiada dana kombinacja wejść.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|} \hline
+        \diagbox[width=4em]{C D}{A B}
+        & 0 0 & 0 1 & 1 1 & 1 0\\
+        \hline
+        0 0 & 0 \textsuperscript{0}& 0 \textsuperscript{1} & 1 \textsuperscript{3} & 0 \textsuperscript{2} \\
+        0 1 & 0 \textsuperscript{4}  & 0 \textsuperscript{5}  & 1 \textsuperscript{7} & 1 \textsuperscript{5} \\
+        1 1 & 1 \textsuperscript{12} & 1 \textsuperscript{13} & 1 \textsuperscript{15} & 1 \textsuperscript{14} \\
+        1 0 & 0 \textsuperscript{8}  & 0 \textsuperscript{9}& 1 \textsuperscript{11}  & 0 \textsuperscript{10} \\
+        \hline
+    \end{tabular}
+\end{table}
