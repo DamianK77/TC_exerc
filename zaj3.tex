@@ -37,7 +37,7 @@ poprzez zapisanie w nawiasie wszystkich liczb, dla których wyjście naszego uk�
 $$Y = \bar{A}\bar{B}CD + \bar{A}BC\bar{D} + \bar{A}BCD + A\bar{B}CD + AB\bar{C}\bar{D} + AB\bar{C}D + ABC\bar{D} + ABCD$$
 Czy ta funkcja jest jednak najprostszym zapisem umożliwiajacym zrealizowanie układu? W tym przypadku od razu widać że, przykładowo, kiedy A i B są jedynkami nie mają znaczenia wartości B i C, układ i tak będzie podawał na wyjście 1. Możemy to jednak sprawdzić również algorytmicznie, wykorzystując do tego \textbf{metodę Karnaugh}.\\
 
-W tym celu formujemy tabelę Karnaugh. Jest to tak na prawdę tabela prawdy, zapisana w delikatnie inny sposób. Tabela \textbf{musi} być zakodowana \textbf{w kodzie Gray'a}. W komórkach tabeli umieszczamy wartość wyjścia $Y$ dla danej kombinacji wejść A B C i D. W prawym górnym rogu umieszczamy zapis której liczbie w systemie dziesiętnym odpowiada dana kombinacja wejść.
+W tym celu formujemy tabelę Karnaugh. Jest to tak na prawdę tabela prawdy, zapisana w delikatnie inny sposób. Tabela \textbf{musi} być zakodowana \textbf{w kodzie Gray'a}. W komórkach tabeli umieszczamy wartość wyjścia $Y$ dla danej kombinacji wejść A B C i D. W prawym górnym rogu dla wygody umieszczamy zapis liczby w systemie dziesiętnym, której odpowiada dana kombinacja wejść.
 
 \begin{table}[h]
     \centering
@@ -46,9 +46,37 @@ W tym celu formujemy tabelę Karnaugh. Jest to tak na prawdę tabela prawdy, zap
         & 0 0 & 0 1 & 1 1 & 1 0\\
         \hline
         0 0 & 0 \textsuperscript{0}& 0 \textsuperscript{1} & 1 \textsuperscript{3} & 0 \textsuperscript{2} \\
-        0 1 & 0 \textsuperscript{4}  & 0 \textsuperscript{5}  & 1 \textsuperscript{7} & 1 \textsuperscript{5} \\
+        0 1 & 0 \textsuperscript{4}  & 0 \textsuperscript{5}  & 1 \textsuperscript{7} & 1 \textsuperscript{6} \\
         1 1 & 1 \textsuperscript{12} & 1 \textsuperscript{13} & 1 \textsuperscript{15} & 1 \textsuperscript{14} \\
         1 0 & 0 \textsuperscript{8}  & 0 \textsuperscript{9}& 1 \textsuperscript{11}  & 0 \textsuperscript{10} \\
         \hline
     \end{tabular}
 \end{table}
+
+Po zapisaniu tablicy przystępujemy do grupowania jedynek (w przypadku realizacji układu na bramkach NAND) lub zer (w przypadku zastosowania bramek NOR). Zasady grupowania w obu przypadkach są takie same. Grupujemy jedynki w grupy o wielkości kolejnych potęg dwójki, przy czym zależy nam na utworzeniu \textbf{jak największych grup}. Możemy grupować jedynki poziomo lub pionowo (nie po ukosie!). Grupy muszą być symetryczne względem tabeli, natomiast elementy grupy \textbf{nie muszą ze sobą bezpośrednio sąsiadować}. Wszystkie jedynki muszą zostać zgrupowane! Grupy mogą na siebie nachodzić (jedna jedynka może być w wielu grupach jednocześnie). W powyższym przykładzie możemy zgrupować pozycje: 12, 13, 15, 14; 3, 7, 15, 11; 7, 6, 15, 14. Powstają więc trzy grupy.
+
+\begin{center}
+    \begin{karnaugh-map}[4][4][1][$D$][$C$][$B$][$A$]
+    \minterms{3,6,7,11,12,13,14,15}
+    \autoterms[0]
+    \implicant{12}{14}
+    \implicant{3}{11}
+    \implicant{7}{14}
+    \end{karnaugh-map}
+\end{center}
+
+Postać optymalną funkcji odczytujemy zapisując równanie na podstawie grup, które właśnie utworzyliśmy. W tym celu patrzymy na pierwszą grupę (12, 13, 15, 14) i sprawdzamy \textbf{które zmienne ulegają zmianie wartości na całej przestrzeni grupy}. W tym przypadku, A i B dla całej grupy wynoszą 1 i 1, a C i D zmieniają wartości. A i B są więc niezmienne w całej grupie, więc gdy powiemy "jedynki są we wszystkich komórkach, gdzie A i B wynosi 1" jednoznacznie zidentyfikujemy ten wiersz jedynek. Odpowiada to zapisowi w ZNPS $Y = AB$. To równanie daje 1 tylko gdy obie wartości A i B wynoszą 1. Kolejna grupa to pionowa grupa 3, 7, 15, 11. Zmienne nie ulegające zmianie w tej grupie to C i D, więc nasze równanie rozszerza się do $Y = AB + CD$. W ostatniej grupie 7, 6, 15, 14 niezmienne są B i C, więc finalna postać naszego równania to:
+$$Y = AB + CD + BC$$
+Ta postać jest dużo prostsza niż postać przed minimalizacją. Algorytm "zauważył", że wystarczy zsumować iloczyny wszystkich kombinacji sąsiadujących ze sobą przycisków, aby dotrzeć do najprostszej formy rozwiązania problemu. Możemy sprawdzić, że dla wszystkich wejść z tabeli prawdy, to równanie daje taki sam rezultat jaki przewiduje ta tabela.
+
+Skoro już zminimalizowaliśmy funkcję, pokażmy co tak na prawdę nam to dało. Dokonajmy \textbf{syntezy} naszego układu na bramkach logicznych, tzn. narysujmy schemat faktycznego, fizycznego układu realizującego te funkcje. W celu wizualizacji wykorzystamy applet Falstad dostępny na https://www.falstad.com/circuit/. Synteza układu zapisanego w ZNPS (minimalizacja po jedynkach, suma iloczynów) polega na narysowaniu układu w postaci \textbf{dwóch warstw} bramek logicznych \textbf{NAND}. Na początek rysujemy po lewej stronie linie przewodów odpowiadających wejściom układu. Do nich będziemy podłączać nasze bramki logiczne. Następnie rysujemy pierwszą warstwę bramek NAND. Bramek będzie tyle, ile mamy \textbf{iloczynów} w równaniu opisującym funkcje. Każdemu iloczynowi odpowiada jedna bramka NAND o tylu wejściach, ile czynników jest w iloczynie. W naszym przypadku będą to trzy bramki NAND o dwóch wejściach każda. Do wejść każdego z NANDów podłączamy zmienne, z których składa się dany iloczyn. Jeśli zmienna jest zanegowana, należy ją podłączyć przez negator. Kiedy podłączymy wszystkie bramki warstwy pierwszej należy podłączyć warstwę drugą. Warstwa druga będzie się składać z jednej bramki NAND, która będzie miała tyle wejść, ile iloczynów mamy w równaniu. W naszym przypadku są to trzy iloczyny, więc też trzy wejścia. Do tego NANDa podłączamy wszystkie wyjścia NANDów z pierwszej warstwy, a jego wyjście stanowi wyjście naszego układu $Y$. Korzystając z symulacji można sprawdzić, że nasz układ działa prawidłowo. Link do symulacji: 
+
+{\tiny https://www.falstad.com/circuit/circuitjs.html?ctz=DwYwlgTgBAZgvAIgIwKgFwM6IAwDpsEECsqYIiSeATAVQOx0DM2AHFQGwCcndqIARoiLZUAB0EIALI1QA3CENQBbTEICmAWiQoAfACgoUYABkoAD0RakVKNZZQrN9pNTwEIgPT7DJ85ee2VPYaAc6uOAheBkamFgha7IHBSIlhsBFRPrGIjDZ2ULlQaW6e3kYA7n7x2nlBDjW27CLp7pFlwJVxIZJJDgFInFThrZkVVQm9E1RE7MOl0R1VhfmFQSxzbQtm49ZIBXT12ERQks0lqBhgiFQu6GqIAIKbPttdTAWJGkQH7LMtzZdrrc0PcEAAhAA6ADtnkZXpZph8HPZGJwNlBAQgbqgQYgAMKw4DwrGMAo9U77dGY7F3RAAEUJxKQqIKxxuPXYJH+FyuWOBoIA6gBDCAYNDlIVQACS0MZSyQKNJ0mwRRk3IxvJpuIQwtF4slUplMNGwAAckKoQATKpISQ9JB0RI3FUOv7nE3mq02u1Qeg2Z2+uhDbkei3WuK2nqMdj2APR9Yh9qdSwNFIqxxQIh2jYm5PIH1p+rWRpnDJJ8b9QZ9KNEYPu8sRgtV7q2QY5hspp0zeqJRgsW71hZ5yO+7tTGbtodLf0sFE2LMDstTxs9NYFGcJwc+PMtxi16uZ7OJ5cUH17my72uT7c7Xv9nuHxcjDv5qP3iZ9p-zHye8M5GiBjYkgpIB6JgFCOSEnmAauuuKrTG6S43nEAZ+nBoHHsh-7wbOvoUvG15jHEwFOkGJySLGQaEUSVR2vB+6SN20xcucGpAjioIAJqbMAHjgBA+hAA}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/robot_komb_schemat.png}
+    \caption{Synteza układu}
+\end{figure}
+
+To koniec naszego zadania. Co warto zauważyć, wielkość naszego układu i jego skomplikowanie bezpośrednio wynika ze skomplikowania równania. Minimalizacja pozwala nam więc znacznie ograniczyć ilość elementów w układzie, obniżając jego koszty wykonania.
