@@ -1,0 +1,21 @@
+\section{Układy iteracyjne}
+Układy iteracyjne to układy składające się z wielu identycznych bloków kombinacyjnych połączonych ze sobą. Każdy z bloków jest układem kombinacyjnym posiadającym wejścia $p$ - przeniesienia (informacja pochodząca z poprzedniego bloku), $x$ - wejścia bieżące (tylko dla aktualnego bloku), oraz wyjścia $p\prime$ - wyjście przeniesienia danego bloku (informacja dla kolejnego bloku) oraz, opcjonalnie, wyjście $y$ z danego bloków (stosowane w układach, które tego wymagają). Na końcu łańcucha bloków może znaleźć się dekoder, czyli układ kombinacyjny posiadający wejścia w postaci przeniesień $p$ oraz wyjście $y$, który ma za zadanie "rozkodowanie", w jakim stanie się znajdujemy i na tej podstawie zapewnienie stanu wyjścia $y$, jakie jest wymagane w zadaniu. Liczba wejść $x$, wyjść $y$ oraz ilość bitów przeniesienia $p$ (a tym samym wyjść $p\prime$) może być dowolna i wynika z konkretnego problemu.
+
+Idea polega na zaprojektowaniu pojdynczego układu kombinacyjnego który, bazując na swoich wejściach (stanie poprzedniego bloku oraz wejściu $x$), podaje na swoim wyjściu $p\prime$ inny (lub ten sam) stan. Stan to określenie na konkretną kombinację bitów przeniesienia $p$. Blok otrzymuje informację z poprzedniego bloku, łączy ją z informacją o swoim wejściu $x$ i podaje na następny blok informację $p\prime$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/diagram_iteracyjne.jpg}
+    \caption{Ogólny schemat układu iteracyjnego.}
+\end{figure}
+
+\subsubsection*{Przykład: konwersja BIN -> Grey}
+Konwersja liczby binarnej do kodu greya jest opisana na początku dokumentu. Polega na wykonywaniu sumy modulo 2. Zwykły układ kombinacyjny musiałby mieć ilość wejść równą ilości bitów konwertowanej liczby (po jednym wejściu na każdą pozycję w liczbie). Konwertując liczbę 16-bitową musielibyśmy wykonać układ 16-wejściowy, więc również bardzo skomplikowany. Dodatkowo, chcąc zmienić ilość bitów wejściowych, musimy przeprojektować cały układ od nowa.
+
+Podejście iteracyjne pozwala nam zrealizować ten problem algorytmicznie. Ponieważ problem zakłada przetwarzanie jednej liczby w inną, zastosujemy wariant układów iteracyjnych z wyjściami z każdego bloku, bez dekodera. Wariant układu należy dobrać pod potrzeby danego zadania. Najpierw należy zdefiniować ile nasz układ będzie miał wejść i wyjść. Przypatrzmy się algorytmowi, możemy na nim zaznaczyć bit wejściowy $x$ (aktualną cyfrę przetwarzanej liczby), bit przeniesienia $p$ (informacja, jaka cyfra była przetwarzana przez poprzedni blok), wyjście $y$ realizujący naszą sumę modulo 2 oraz wyjście $p\prime$, które będzie informacją przekazywaną do kolejnego bloku o tym, jaką cyfrę właśnie przetworzyliśmy.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/bin_grey_converter.jpg}
+    \caption{Schemat działania konwertera, zaznaczony pojedynczy blok z wejściami i wyjściami.}
+\end{figure}
