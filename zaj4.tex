@@ -76,6 +76,50 @@ Na schemacie mamy wejście $p$ przeniesienia z poprzedniego bloku (którego na r
 Na rysunku widać cztery identyczne bloki. Warto zauważyć, że wejście $p$ pierwszego bloku od lewej jest niepodłączone. W zadaniu zawsze musimy określić \textbf{przeniesienie początkowe}, czyli stan, w którym znajduje się nasz układ na początku łańcucha bloków. Jest to kluczowe do poprawnej pracy układu. W naszym przypadku, patrząc na algorytm konwersji, stan początkowy przeniesienia powinien wynosić 0 i musimy to jasno zapisać przy rozwiązywaniu zadania. Na wejścia $x$ bloków podaliśmy liczbę 1101\textsubscript{2}. Na rysunku widać odpowiedzi bloków, których wyjścia przyjmują odpowiednie stany na podstawie wejść $x$ oraz $p$. Wyjście $p\prime$ jest połączone z wejściem $p$ kolejnego bloku. Na wyjściach $y$ powstaje nam liczba 1011\textsubscript{Grey}, czyli odpowiednik liczby wejściowej w kodzie Greya. Uzyskaliśmy więc układ konwertujący liczbę binarną do Greya, który możemy rozszerzyć do przetwarzania liczby o dowolnej liczbie bitów dodając jedynie więcej identycznych bloków do łańcucha.
 
 \subsubsection*{Przykład: detekcja sekwencji}
-Dostajemy zadanie: w ciągu dowolnej długości wykryć zadaną sekwencję. Przykładowo, wykrywamy sekwencję "1001". Oznacza to, że wyjście naszego układu ma wynosić 1, gdy w ciągu wejściowym (czyli w liczbie podawanej na wejścia naszych bloków, po bicie na blok) znajduje się dana sekwencja. W tego typu zadaniu zakładamy z reguły, że liczba bloków tworzących układ jest dowolna (zależy od długości ciągu, który chcemy sprawdzać). Z reguły też na każdy blok będzie podawany jeden bit z tego ciągu (ale wcale nie musi tak być). Ponieważ nasz układ ma zwracać informację, czy sekwencja w ogóle znajduje się w naszym ciągu, wykorzystamy typ układu z \textbf{dekoderem}. Dekoder będzie ostatnim blokiem naszego układu, który będzie odczytywał stan końcowy łańcucha bloków przed nim i na tej podstawie określał wartość wyjścia. Każdej kombinacji bitów przeniesienia będziemy więc nadawać wartość wyjścia $y$.
+Dostajemy zadanie: w ciągu dowolnej długości wykryć zadaną sekwencję. Na każdy z bloków podawany jest jeden bit ciągu. Stan wyjścia ma wynosić 1 jeśli w ciągu jest sekwencja, a 0 jeśli jej nie ma. Sekwencja do wykrycia to "1001".
 
-Pierwszym etapem zadania będzie określenie w jakich \textbf{stanach} nasz układ może się znajdować. Stany określamy sami na podstawie treści zadania. Pamiętajmy, że w każdym kolejnym bloku dostajemy kolejny bit ciągu wejściowego.
+Oznacza to, że wyjście naszego układu ma wynosić 1, gdy w ciągu wejściowym (czyli w liczbie podawanej na wejścia naszych bloków, po bicie na blok) znajduje się dana sekwencja. W tego typu zadaniu zakładamy z reguły, że liczba bloków tworzących układ jest dowolna (zależy od długości ciągu, który chcemy sprawdzać). Z reguły też na każdy blok będzie podawany jeden bit z tego ciągu (ale wcale nie musi tak być). Ponieważ nasz układ ma zwracać informację, czy sekwencja w ogóle znajduje się w naszym ciągu, wykorzystamy typ układu z \textbf{dekoderem}. Dekoder będzie ostatnim blokiem naszego układu, który będzie odczytywał stan końcowy łańcucha bloków przed nim i na tej podstawie określał wartość wyjścia. Każdej kombinacji bitów przeniesienia będziemy więc nadawać wartość wyjścia $y$.
+
+Pierwszym etapem zadania będzie określenie w jakich \textbf{stanach} nasz układ może się znajdować. Stany określamy sami na podstawie treści zadania. Pamiętajmy, że w każdym kolejnym bloku dostajemy kolejny bit ciągu wejściowego. Stany powinny być tak zaprojektowane, aby każdy kolejny blok mógł na podstawie stanu poprzedniego bloku oraz aktualnego wejścia określić w jakim stanie powinien się znaleźć. Zaproponujmy więc stany i przypiszmy im litery:
+\begin{itemize}
+    \item Nic nie wykryto  A
+    \item Wykryto "1"  B
+    \item Wykryto "10"  C
+    \item Wykryto "100"  D
+    \item Wykryto "1001"  E
+\end{itemize}
+Do zaprojektowania stanów można wykorzystać przykładowy ciąg i stwierdzać, co powinno się dziać pod wpływem kolejnych wejść. Dla powyższych definicji stanów mamy (idziemy od lewej do prawej, poniżej liczby znajduje się stan, który układ powinien przyjąć pod wpływem poprzedniego stanu oraz aktualnego wyjścia). W tym przykładzie stan powinien blokować się po wykryciu 1001, ponieważ sekwencja została już wykryta w ciągu.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        0&1&0&1&1&0&0&0&1&0&0&1&0&1&1\\
+        A&B&C&B&B&C&D&A&B&C&D&E&E&E&E\\
+    \end{tabular}
+\end{table}
+
+Zależność stanu przekazywanego na następny blok $p\prime$ od stanu poprzedniego może być przedstawiona bardziej formalnie, w postaci grafu. W grafie węzłami będą stany, które może przyjmować nasz układ. Nad strzałkami umieszczamy wejście $x$, które prowadzi do danej zmiany stanów. Graf dla tego układu wygląda następująco:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/detector_1001_graph.drawio.png}
+    \caption{Graf układu detekcji 1001.}
+\end{figure}
+
+Jeśli prześledzimy nasz graf podając kolejno bity sekwencji, którą mamy wykryć, dotrzemy do stanu E który zapętla się pod wpływem dowolnego wejścia. Skoro mamy już zdefiniowane przejścia między stanami, do definicji stanów musimy dorzucić jeszcze wartość wyjścia dla każdego stanu oraz \textbf{zakodować} stany. Układy które projektujemy muszą mieć sposób na przekazywanie sobie, w jakim stanie się znajdują. Dlatego każdemu stanowi przypisujemy unikalną kombinację bitów przeniesienia. Ponieważ w naszym przypadku mamy 5 stanów, minimalna liczba bitów przeniesienia wynosi 3 (potrzebujemy 3 bitów żeby zapisać 5 liczb). Sposób przypisania kombinacji bitów jest dowolny. Przypisane wyjścia natomiast będą nam służyły do zaprojektowania dekodera. Wyjście powinno wynosić 1 tylko kiedy wykryjemy sekwencję, więc tylko w stanie E.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        Opis & Symbol & $p_1 p_2 p_3$ & $y$\\
+        \hline
+        Nic nie wykryto & A & 000 & 0\\
+        Wykryto "1" & B & 001 & 0\\
+        Wykryto "10" & C & 011 & 0\\
+        Wykyto "100" & D & 010 & 0\\
+        Wykryto "1001" & E & 110 & 1\\
+        \hline
+    \end{tabular}
+\end{table}
+
+Mamy już zakodowane stany oraz określone przejścia między nimi. Możemy więc zaprojektować układ kombinacyjny, który napodstawie wejść $p_1 p_2 p_3$ oraz wejścia $x$ podaje wyjścia $p_1\prime p_2\prime p_3\prime$ na kolejny blok.
